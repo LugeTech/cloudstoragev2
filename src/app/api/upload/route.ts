@@ -8,7 +8,7 @@ const unixTime = Date.now();
 export async function POST(request: NextRequest) {
   console.log("POST");
   const user = await getUserData();
-  console.log(user);
+  // console.log(user);
   const userFolder = user?.id;
 
   const formData = await request.formData();

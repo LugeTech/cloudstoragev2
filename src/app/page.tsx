@@ -1,7 +1,5 @@
 "use client";
 import { UserButton, useUser } from "@clerk/nextjs";
-import Navbar from "@/app/components/Navbar";
-import MultiFileUpload from "./components/fileUpload/MultiFileUpload";
 import { FrontPage } from "@/components/front-page";
 
 export default function Home() {
@@ -15,11 +13,6 @@ export default function Home() {
   } else {
     return (
       <main className="flex min-h-screen w-full flex-col items-center sm:px-24 ">
-        {/* <Navbar /> */}
-        {/* <UserButton afterSignOutUrl="/" /> */}
-        {/* {<h1 className="text-4xl font-bold text-center">Cloud App</h1>} */}
-        {/* <MultiFileUpload /> */}
-
         <FrontPage />
       </main>
     );
