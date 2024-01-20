@@ -11,8 +11,9 @@ export async function POST(request: NextRequest) {
   console.log("POST");
 
   const user = (await getUserData(request)) as UserData;
-  console.log(user.clerk_id);
+  // console.log(user);
   const userFolder = user.clerk_id;
+  let newString = userFolder.substring(5);
 
   const formData = await request.formData();
   const file = formData.get("file") as File;
@@ -34,6 +35,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.log("Error creating folder: ", error);
   }
+
   try {
     // Convert the File to a Buffer
     const fileBuffer = Buffer.from(await file.arrayBuffer());
@@ -52,21 +54,36 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false });
   }
 
-  // if(user !=null){
-  // try {
-  //   const newUser = await prisma.user.create({
-  //     data: {
-  //       username: user.firstName,
-  //       email: user?.emailAddresses,
-  //       clerk_id: user?.id,
-  //       //files:
-  //     },
-  //   });
-  //   console.log(newUser);
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  // }
+  try {
+    const newFile = await prisma.file.create({
+      data: {
+        name: newFilename,
+        size: 14,
+        userId: user.clerk_id,
+        link: `/uploads/${newString}/${newFilename}`,
+      },
+    });
+    console.log(newFile);
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    const newUser = await prisma.user.upsert({
+      where: {
+        email: user.email,
+      },
+      update: {},
+      create: {
+        username: user.fName,
+        email: user.email,
+        clerk_id: user.clerk_id,
+      },
+    });
+    console.log(newUser);
+  } catch (error) {
+    console.log(error);
+  }
 
   // Process the form data
   return NextResponse.json({ success: true });
