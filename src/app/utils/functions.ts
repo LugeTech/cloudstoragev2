@@ -1,12 +1,11 @@
 import { UserData } from "./interfaces";
-import { currentUser } from "@clerk/nextjs";
-export async function getUserData() {
-  const user = await currentUser();
-
-  if (!user) {
+import { getAuth } from "@clerk/nextjs/server";
+export async function getUserData(request: any) {
+  const { sessionClaims } = getAuth(request);
+  if (!sessionClaims) {
     return null;
   }
-  const userData = user as unknown as UserData;
+  const userData = sessionClaims as unknown as UserData;
 
   return userData;
 }
