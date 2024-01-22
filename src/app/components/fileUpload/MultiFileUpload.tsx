@@ -61,6 +61,7 @@ const FileUpload: React.FC = () => {
     formData.append("file", file);
     const cancelSource = axios.CancelToken.source();
     try {
+      console.log(process.env.NEXT_PUBLIC_API_PATH_UPLOAD);
       await axios.post(
         process.env.NEXT_PUBLIC_API_PATH_UPLOAD as string,
         formData,
